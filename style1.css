@@ -1,21 +1,15 @@
- /* =========================
-   VARIABLES STYLE "SPOTIFY LIGHT"
-========================= */
 :root {
-    --bg-main: #f8f9fa;       /* Fond de page très clair */
-    --bg-card: #ffffff;       /* Blanc pur pour les cartes */
-    --spotify-green: #1ed760; /* Le vert iconique pour les accents */
-    --text-main: #121212;     /* Presque noir pour la lisibilité */
-    --text-muted: #6a6a6a;    /* Gris pour les infos secondaires */
+    --bg-main: #f8f9fa;       
+    --bg-card: #ffffff;      
+    --spotify-green: #1ed760; 
+    --text-main: #121212;    
+    --text-muted: #6a6a6a;    
     --border-soft: #efefef;
     --radius-lg: 12px;
     --radius-sm: 8px;
     --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-/* =========================
-   RESET & BASE
-========================= */
 * {
     margin: 0;
     padding: 0;
@@ -23,14 +17,11 @@
 }
 
 body {
-    font-family: 'Circular Std', 'Segoe UI', Roboto, sans-serif; /* Font proche de Spotify */
+    font-family: 'Circular Std', 'Segoe UI', Roboto, sans-serif; 
     background-color: var(--bg-main);
     color: var(--text-main);
 }
 
-/* =========================
-   HEADER (Navigation discrète)
-========================= */
 .header {
     background-color: var(--bg-card);
     padding: 1rem 0;
@@ -55,16 +46,15 @@ body {
 .nav a {
     text-decoration: none;
     color: var(--text-main);
-    font-size: 1.1rem;      /* On agrandit le lien Accueil */
-    font-weight: 700;       /* On le met bien en évidence */
+    font-size: 1.1rem;     
+    font-weight: 700;       
     transition: color 0.2s;
 }
 
 .nav a:hover {
-    color: var(--spotify-green); /* Le lien devient vert au survol */
-    text-decoration: none;       /* On enlève le soulignement moche */
-}
-
+    color: var(--spotify-green); 
+    text-decoration: none;       
+ 
 .hero {
     padding: 4rem 1rem;
     text-align: center;
@@ -78,20 +68,21 @@ body {
 
 .pdf-container {
     display: flex;
-    gap: 2rem;           
-    width: 95%;         
-    max-width: 1800px;   
-    margin: 6rem auto 0; 
-    padding-bottom: 4rem;
+    flex-wrap: wrap;
+    gap: 1.5rem;     
+    width: 95%;
+    max-width: 1800px;
+    margin: 2rem auto; 
+    padding-bottom: 2rem;
 }
 
 
 .pdf-section {
-    flex: 1;         
-    width: 50%;        
+    flex: 1 1 400px;  /* Grandit si possible, mais ne descend pas sous 400px si l'écran le permet */
+    min-width: 0;     /* Empêche le débordement du contenu textuel */
     background-color: var(--bg-card);
     border-radius: var(--radius-lg);
-    padding: 3rem;     
+    padding: 2rem;    /* Padding réduit pour gagner de la place */
     box-shadow: var(--shadow);
     transition: transform 0.3s ease;
 }
@@ -103,18 +94,16 @@ body {
 .pdf-section h3 {
     font-size: 1.4rem;
     margin-bottom: 1.5rem;
-    border-left: 5px solid var(--spotify-green); /* Petite touche verte Spotify */
+    border-left: 5px solid var(--spotify-green); 
     padding-left: 10px;
 }
 
-/* =========================
-   BARRE DE RECHERCHE (Style Spotify)
-========================= */
+
 .search-input {
     width: 100%;
     background-color: #f0f0f0;
     border: 2px solid transparent;
-    border-radius: 50px; /* Très arrondi comme Spotify */
+    border-radius: 50px; 
     padding: 0.8rem 1.5rem;
     font-size: 0.9rem;
     outline: none;
@@ -128,9 +117,7 @@ body {
     box-shadow: 0 0 0 4px rgba(30, 215, 96, 0.1);
 }
 
-/* =========================
-   LISTE DE PDF
-========================= */
+
 .pdf-list {
     list-style: none;
 }
@@ -150,17 +137,60 @@ body {
     transition: background 0.2s;
 }
 
-/* Effet de survol sur les titres (Comme une playlist) */
+
 .pdf-list a:hover {
     background-color: #f6f6f6;
     color: var(--spotify-green);
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
-@media (max-width: 850px) {
+
+@media (max-width: 1024px) {
+    .hero h2 {
+        font-size: 2rem;
+    }
+}
+
+/* Mobiles (Smartphones) */
+@media (max-width: 600px) {
+    .header .container {
+        padding: 1rem;
+        flex-direction: column; /* Logo au dessus du menu */
+        gap: 10px;
+    }
+
+    .logo {
+        font-size: 1.4rem;
+    }
+
+    .hero {
+        padding: 2rem 1rem;
+    }
+
+    .hero h2 {
+        font-size: 1.6rem;
+    }
+
     .pdf-container {
-        flex-direction: column;
+        margin-top: 1rem;
+        gap: 1rem;
+    }
+
+    .pdf-section {
+        flex: 1 1 100%; /* Prend toute la largeur sur mobile */
+        padding: 1.5rem; /* On respire un peu plus sur les bords */
+        width: 100%;    /* Force la largeur pleine */
+    }
+
+    .pdf-section h3 {
+        font-size: 1.2rem;
+    }
+
+    .search-input {
+        padding: 0.7rem 1.2rem; /* Input légèrement plus petit */
+    }
+    
+    .pdf-list a {
+        padding: 1rem; /* Plus large zone de clic pour les doigts */
+        border-bottom: 1px solid var(--border-soft); /* Séparateur visuel sur mobile */
     }
 }
