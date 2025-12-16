@@ -19,14 +19,13 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box; /* Crucial pour éviter que ça dépasse à droite */
+    box-sizing: border-box;
 }
 
 body {
     font-family: 'Circular Std', 'Segoe UI', Roboto, sans-serif;
     background-color: var(--bg-main);
     color: var(--text-main);
-    overflow-x: hidden; /* Empêche le scroll horizontal parasite */
 }
 
 /* =========================
@@ -60,61 +59,74 @@ body {
     text-decoration: none;
     color: var(--text-main);
     font-weight: 700;
+    transition: color 0.2s;
 }
 
+.nav a:hover {
+    color: var(--spotify-green);
+}
+
+/* =========================
+   HERO (TITRE RECENTRÉ)
+========================= */
 .hero {
+    padding: 4rem 1rem 2rem;
+    text-align: center; /* Centre le texte */
     display: flex;
     flex-direction: column;
-    align-items: center;    /* Centre horizontalement */
-    justify-content: center; /* Centre verticalement */
-    text-align: center;      /* Centre le texte à l'intérieur des balises */
-    padding: 3rem 1rem;      /* Espace autour */
-    width: 100%;             /* Prend toute la largeur */
+    align-items: center; /* Centre les blocs h2 et p */
 }
 
 .hero h2 {
     font-size: 2.2rem;
     font-weight: 800;
-    margin-bottom: 1rem;
-    max-width: 800px;        /* Évite que le titre soit trop large sur PC */
+    margin-bottom: 0.5rem;
+    width: 100%;
 }
 
 .hero p {
     color: var(--text-muted);
-    font-size: 1.1rem;
     font-weight: 500;
 }
+
 /* =========================
-   CONTENEUR PRINCIPAL
+   PDF CONTAINER & SECTIONS
 ========================= */
 .pdf-container {
     display: flex;
-    flex-wrap: wrap;        /* Permet le passage à la ligne */
-    justify-content: center; /* Centre les cartes sur PC */
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 2rem;
-    width: 90%;
-    max-width: 1200px;
-    margin: 4rem auto;      /* Centre le bloc sur la page */
+    width: 95%;
+    max-width: 1400px;
+    margin: 2rem auto 4rem;
 }
 
 .pdf-section {
-    flex: 1 1 400px;        /* S'adapte, mais essaie de faire 400px de large */
+    flex: 1 1 400px;
     background-color: var(--bg-card);
     border-radius: var(--radius-lg);
     padding: 2.5rem;
     box-shadow: var(--shadow);
-    transition: transform 0.3s ease;
+    /* Animation remise ici */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* L'effet qui fait bouger le container au survol */
+.pdf-section:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
 }
 
 .pdf-section h3 {
     font-size: 1.4rem;
     margin-bottom: 1.5rem;
     border-left: 5px solid var(--spotify-green);
-    padding-left: 10px;
+    padding-left: 12px;
 }
 
 /* =========================
-   RECHERCHE ET LISTES
+   BARRE DE RECHERCHE
 ========================= */
 .search-input {
     width: 100%;
@@ -122,17 +134,27 @@ body {
     border: 2px solid transparent;
     border-radius: 50px;
     padding: 0.8rem 1.5rem;
-    margin-bottom: 2rem;
+    font-size: 0.9rem;
     outline: none;
+    transition: all 0.2s;
+    margin-bottom: 2rem;
 }
 
 .search-input:focus {
+    background-color: #ffffff;
     border-color: var(--spotify-green);
-    background-color: #fff;
+    box-shadow: 0 0 0 4px rgba(30, 215, 96, 0.1);
 }
 
+/* =========================
+   LISTE DE PDF
+========================= */
 .pdf-list {
     list-style: none;
+}
+
+.pdf-list li {
+    margin-bottom: 0.5rem;
 }
 
 .pdf-list a {
@@ -141,7 +163,9 @@ body {
     color: var(--text-main);
     padding: 0.8rem 1rem;
     border-radius: var(--radius-sm);
-    transition: 0.2s;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: background 0.2s;
 }
 
 .pdf-list a:hover {
@@ -150,33 +174,34 @@ body {
 }
 
 /* =========================
-   MOBILE OPTIMISATION
+   RESPONSIVE (MOBILE)
 ========================= */
-@media (max-width: 768px) {
+@media (max-width: 850px) {
+    .header .container {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .hero h2 {
+        font-size: 1.6rem;
+    }
+
     .pdf-container {
-        width: 100%;       /* Prend tout l'écran */
-        padding: 0 15px;   /* Petite marge interne pour pas toucher les bords */
-        margin: 2rem 0;    /* Marge haut/bas uniquement */
-        flex-direction: column; 
-        align-items: center; /* Centre les cartes verticalement */
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        padding: 0 20px;
     }
 
     .pdf-section {
-        width: 100%;       /* La carte prend toute la largeur du container */
-        max-width: 100%;
-        flex: none;        /* Désactive le comportement flex PC */
-        padding: 1.5rem;   /* Moins d'espace vide sur mobile */
+        width: 100%;
+        flex: none;
+        padding: 1.5rem;
     }
-
-    .header .container {
-        flex-direction: column;
-        gap: 10px;
-    }
-   .hero h2 {
-        font-size: 1.6rem;   /* Titre un peu plus petit sur petit écran */
-    }
-    .hero p {
-        font-size: 0.95rem;
+    
+    /* On réduit un peu l'effet hover sur mobile pour éviter les bugs tactiles */
+    .pdf-section:hover {
+        transform: translateY(-4px);
     }
 }
 
