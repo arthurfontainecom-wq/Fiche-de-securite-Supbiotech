@@ -1,0 +1,166 @@
+ /* =========================
+   VARIABLES STYLE "SPOTIFY LIGHT"
+========================= */
+:root {
+    --bg-main: #f8f9fa;       /* Fond de page très clair */
+    --bg-card: #ffffff;       /* Blanc pur pour les cartes */
+    --spotify-green: #1ed760; /* Le vert iconique pour les accents */
+    --text-main: #121212;     /* Presque noir pour la lisibilité */
+    --text-muted: #6a6a6a;    /* Gris pour les infos secondaires */
+    --border-soft: #efefef;
+    --radius-lg: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* =========================
+   RESET & BASE
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Circular Std', 'Segoe UI', Roboto, sans-serif; /* Font proche de Spotify */
+    background-color: var(--bg-main);
+    color: var(--text-main);
+}
+
+/* =========================
+   HEADER (Navigation discrète)
+========================= */
+.header {
+    background-color: var(--bg-card);
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+}
+.header .container {
+    padding: 1.5rem 2rem; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.logo {
+    font-size: 1.8rem;      
+    font-weight: 900;      
+    letter-spacing: -1px;  
+    color: var(--text-main);
+    text-transform: uppercase;
+}
+.nav a {
+    text-decoration: none;
+    color: var(--text-main);
+    font-size: 1.1rem;      /* On agrandit le lien Accueil */
+    font-weight: 700;       /* On le met bien en évidence */
+    transition: color 0.2s;
+}
+
+.nav a:hover {
+    color: var(--spotify-green); /* Le lien devient vert au survol */
+    text-decoration: none;       /* On enlève le soulignement moche */
+}
+
+.hero {
+    padding: 4rem 1rem;
+    text-align: center;
+}
+
+.hero h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+
+.pdf-container {
+    display: flex;
+    gap: 2rem;           
+    width: 95%;         
+    max-width: 1800px;   
+    margin: 6rem auto 0; 
+    padding-bottom: 4rem;
+}
+
+
+.pdf-section {
+    flex: 1;         
+    width: 50%;        
+    background-color: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 3rem;     
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease;
+}
+
+.pdf-section:hover {
+    transform: translateY(-5px);
+}
+
+.pdf-section h3 {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    border-left: 5px solid var(--spotify-green); /* Petite touche verte Spotify */
+    padding-left: 10px;
+}
+
+/* =========================
+   BARRE DE RECHERCHE (Style Spotify)
+========================= */
+.search-input {
+    width: 100%;
+    background-color: #f0f0f0;
+    border: 2px solid transparent;
+    border-radius: 50px; /* Très arrondi comme Spotify */
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.2s;
+    margin-bottom: 2rem;
+}
+
+.search-input:focus {
+    background-color: #ffffff;
+    border-color: var(--spotify-green);
+    box-shadow: 0 0 0 4px rgba(30, 215, 96, 0.1);
+}
+
+/* =========================
+   LISTE DE PDF
+========================= */
+.pdf-list {
+    list-style: none;
+}
+
+.pdf-list li {
+    margin-bottom: 0.5rem;
+}
+
+.pdf-list a {
+    display: block;
+    text-decoration: none;
+    color: var(--text-main);
+    padding: 0.8rem 1rem;
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: background 0.2s;
+}
+
+/* Effet de survol sur les titres (Comme une playlist) */
+.pdf-list a:hover {
+    background-color: #f6f6f6;
+    color: var(--spotify-green);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 850px) {
+    .pdf-container {
+        flex-direction: column;
+    }
+}
