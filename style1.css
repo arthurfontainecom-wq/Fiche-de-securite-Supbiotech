@@ -68,25 +68,24 @@ body {
 
 .pdf-container {
     display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem;     
-    width: 95%;
-    max-width: 1800px;
-    margin: 2rem auto; 
-    padding-bottom: 2rem;
+    flex-direction: row; /* Côte à côte par défaut */
+    flex-wrap: wrap;     /* Permet d'aller à la ligne */
+    gap: 2rem;
+    width: 90%;          /* On laisse 5% de marge de chaque côté */
+    max-width: 1400px;
+    margin: 2rem auto;   /* Le "auto" centre le container horizontalement */
+    padding: 0;          /* On nettoie le padding interne */
 }
 
 
 .pdf-section {
-    flex: 1 1 400px;  /* Grandit si possible, mais ne descend pas sous 400px si l'écran le permet */
-    min-width: 0;     /* Empêche le débordement du contenu textuel */
+    flex: 1;             /* Partage l'espace équitablement */
+    min-width: 300px;    /* Empêche de devenir trop écrasé */
     background-color: var(--bg-card);
     border-radius: var(--radius-lg);
-    padding: 2rem;    /* Padding réduit pour gagner de la place */
+    padding: 2rem;
     box-shadow: var(--shadow);
-    transition: transform 0.3s ease;
 }
-
 .pdf-section:hover {
     transform: translateY(-5px);
 }
@@ -143,54 +142,20 @@ body {
     color: var(--spotify-green);
 }
 
-
-@media (max-width: 1024px) {
-    .hero h2 {
-        font-size: 2rem;
-    }
-}
-
-/* Mobiles (Smartphones) */
-@media (max-width: 600px) {
-    .header .container {
-        padding: 1rem;
-        flex-direction: column; /* Logo au dessus du menu */
-        gap: 10px;
-    }
-
-    .logo {
-        font-size: 1.4rem;
-    }
-
-    .hero {
-        padding: 2rem 1rem;
-    }
-
-    .hero h2 {
-        font-size: 1.6rem;
-    }
-
+@media (max-width: 768px) {
     .pdf-container {
-        margin-top: 1rem;
-        gap: 1rem;
+        flex-direction: column; /* Force l'empilement vertical */
+        align-items: center;    /* Centre les éléments horizontalement */
+        width: 100%;            /* Utilise toute la largeur */
+        margin: 1rem 0;         /* Enlève les marges auto sur le côté */
+        gap: 1.5rem;
     }
 
     .pdf-section {
-        flex: 1 1 100%; /* Prend toute la largeur sur mobile */
-        padding: 1.5rem; /* On respire un peu plus sur les bords */
-        width: 100%;    /* Force la largeur pleine */
-    }
-
-    .pdf-section h3 {
-        font-size: 1.2rem;
-    }
-
-    .search-input {
-        padding: 0.7rem 1.2rem; /* Input légèrement plus petit */
-    }
-    
-    .pdf-list a {
-        padding: 1rem; /* Plus large zone de clic pour les doigts */
-        border-bottom: 1px solid var(--border-soft); /* Séparateur visuel sur mobile */
+        width: 90%;             /* La carte prend 90% de l'écran du tel */
+        max-width: none;        /* On casse les limites du PC */
+        flex: none;             /* Désactive la flexibilité PC */
+        margin: 0 auto;         /* Centre la carte dans le container */
     }
 }
+
