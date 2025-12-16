@@ -1,5 +1,5 @@
 /* =========================
-    VARIABLES STYLE "SPOTIFY LIGHT"
+   VARIABLES STYLE "SPOTIFY LIGHT"
 ========================= */
 :root {
     --bg-main: #f8f9fa;
@@ -14,27 +14,27 @@
 }
 
 /* =========================
-    RESET & BASE
+   RESET & BASE
 ========================= */
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    box-sizing: border-box; /* Crucial pour éviter que ça dépasse à droite */
 }
 
 body {
     font-family: 'Circular Std', 'Segoe UI', Roboto, sans-serif;
     background-color: var(--bg-main);
     color: var(--text-main);
-    line-height: 1.5;
+    overflow-x: hidden; /* Empêche le scroll horizontal parasite */
 }
 
 /* =========================
-    HEADER
+   HEADER
 ========================= */
 .header {
     background-color: var(--bg-card);
-    padding: 1rem 0;
+    padding: 1.5rem 0;
     position: sticky;
     top: 0;
     z-index: 100;
@@ -42,78 +42,46 @@ body {
 }
 
 .header .container {
-    max-width: 1400px;
+    width: 90%;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 .logo {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     font-weight: 900;
     letter-spacing: -1px;
-    color: var(--text-main);
-    text-transform: uppercase;
 }
 
 .nav a {
     text-decoration: none;
     color: var(--text-main);
-    font-size: 1.1rem;
     font-weight: 700;
-    transition: color 0.2s;
-}
-
-.nav a:hover {
-    color: var(--spotify-green);
 }
 
 /* =========================
-    HERO SECTION
-========================= */
-.hero {
-    padding: 3rem 1rem;
-    text-align: center;
-}
-
-.hero h2 {
-    font-size: 2.5rem;
-    font-weight: 800;
-    margin-bottom: 0.5rem;
-}
-
-/* =========================
-    CONTENEUR PRINCIPAL (CORRIGÉ)
+   CONTENEUR PRINCIPAL
 ========================= */
 .pdf-container {
     display: flex;
-    flex-wrap: wrap;       /* Permet de passer à la ligne sur mobile */
-    justify-content: center; /* Centre les cartes horizontalement */
+    flex-wrap: wrap;        /* Permet le passage à la ligne */
+    justify-content: center; /* Centre les cartes sur PC */
     gap: 2rem;
     width: 90%;
-    max-width: 1400px;
-    margin: 2rem auto;     /* Centre le bloc sur la page */
-    padding-bottom: 4rem;
+    max-width: 1200px;
+    margin: 4rem auto;      /* Centre le bloc sur la page */
 }
 
-/* =========================
-    CARTES PDF (CORRIGÉ)
-========================= */
 .pdf-section {
-    flex: 1;               /* Distribue l'espace sur PC */
-    min-width: 320px;      /* Largeur minimum pour ne pas être trop serré */
-    max-width: 600px;      /* Évite que la carte soit trop large sur grand écran */
+    flex: 1 1 400px;        /* S'adapte, mais essaie de faire 400px de large */
     background-color: var(--bg-card);
     border-radius: var(--radius-lg);
     padding: 2.5rem;
     box-shadow: var(--shadow);
     transition: transform 0.3s ease;
-}
-
-.pdf-section:hover {
-    transform: translateY(-5px);
 }
 
 .pdf-section h3 {
@@ -124,7 +92,7 @@ body {
 }
 
 /* =========================
-    RECHERCHE & LISTE
+   RECHERCHE ET LISTES
 ========================= */
 .search-input {
     width: 100%;
@@ -132,24 +100,17 @@ body {
     border: 2px solid transparent;
     border-radius: 50px;
     padding: 0.8rem 1.5rem;
-    font-size: 0.9rem;
-    outline: none;
-    transition: all 0.2s;
     margin-bottom: 2rem;
+    outline: none;
 }
 
 .search-input:focus {
-    background-color: #ffffff;
     border-color: var(--spotify-green);
-    box-shadow: 0 0 0 4px rgba(30, 215, 96, 0.1);
+    background-color: #fff;
 }
 
 .pdf-list {
     list-style: none;
-}
-
-.pdf-list li {
-    margin-bottom: 0.5rem;
 }
 
 .pdf-list a {
@@ -158,9 +119,7 @@ body {
     color: var(--text-main);
     padding: 0.8rem 1rem;
     border-radius: var(--radius-sm);
-    font-weight: 500;
-    font-size: 0.95rem;
-    transition: background 0.2s;
+    transition: 0.2s;
 }
 
 .pdf-list a:hover {
@@ -169,37 +128,26 @@ body {
 }
 
 /* =========================
-    RESPONSIVE MOBILE (IMPORTANT)
+   MOBILE OPTIMISATION
 ========================= */
 @media (max-width: 768px) {
-    .header .container {
-        padding: 1rem;
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .hero h2 {
-        font-size: 1.8rem;
-    }
-
     .pdf-container {
-        flex-direction: column; /* Empilement vertical */
-        align-items: center;    /* Centre les cartes au milieu de l'écran */
-        width: 100%;            /* Prend toute la largeur disponible */
-        gap: 1.5rem;
-        margin-top: 1rem;
+        width: 100%;       /* Prend tout l'écran */
+        padding: 0 15px;   /* Petite marge interne pour pas toucher les bords */
+        margin: 2rem 0;    /* Marge haut/bas uniquement */
+        flex-direction: column; 
+        align-items: center; /* Centre les cartes verticalement */
     }
 
     .pdf-section {
-        width: 90%;             /* La carte occupe 90% de la largeur du téléphone */
-        min-width: unset;       /* Enlève la contrainte de largeur min */
-        padding: 1.5rem;        /* Padding interne plus petit pour gagner de la place */
+        width: 100%;       /* La carte prend toute la largeur du container */
+        max-width: 100%;
+        flex: none;        /* Désactive le comportement flex PC */
+        padding: 1.5rem;   /* Moins d'espace vide sur mobile */
     }
 
-    .pdf-list a {
-        padding: 1rem;          /* Plus facile à cliquer avec le doigt */
-        background-color: #fcfcfc;
-        border: 1px solid var(--border-soft);
-        margin-bottom: 5px;
+    .header .container {
+        flex-direction: column;
+        gap: 10px;
     }
 }
