@@ -2,6 +2,7 @@ const repoOwner = "arthurfontainecom-wq";
 const repoName = "Fiche-de-securite-Supbiotech";
 
 async function chargerDossier(nomVille, idListe) {
+    // Utilisation de l'API GitHub (plus fiable pour les sous-dossiers)
     const url = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/pdf/${nomVille}`;
     
     try {
@@ -19,6 +20,7 @@ async function chargerDossier(nomVille, idListe) {
                     const li = document.createElement('li');
                     const nomAffiche = file.name.replace('.pdf', '').replace(/_/g, ' ');
                     
+                    // Lien de téléchargement direct
                     li.innerHTML = `<a href="${file.download_url}" target="_blank">${nomAffiche}</a>`;
                     listElement.appendChild(li);
                 }
@@ -26,6 +28,7 @@ async function chargerDossier(nomVille, idListe) {
         }
     } catch (error) {
         console.error("Erreur pour " + nomVille + " :", error);
+        // Affiche un message si le dossier est vide
         const listElement = document.getElementById(idListe);
         if(listElement) listElement.innerHTML = "<li>Aucun document trouvé</li>";
     }
@@ -56,3 +59,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     configurerRecherche('searchVillejuif', 'pdfVillejuif');
     configurerRecherche('searchLyon', 'pdfLyon');
 });
+
