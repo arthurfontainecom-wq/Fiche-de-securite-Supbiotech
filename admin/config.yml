@@ -2,7 +2,8 @@ backend:
   name: git-gateway
   repo: arthurfontainecom-wq/Fiche-de-securite-Supbiotech
   branch: main
-  
+
+# Ce dossier sert de secours, mais ne sera pas utilisé par les collections en dessous
 media_folder: "pdf"
 public_folder: "/pdf"
 
@@ -11,8 +12,8 @@ collections:
     label: "Fiches Villejuif"
     folder: "pdf/villejuif"
     create: true
-    path: "{{title}}"
-    media_folder: ""
+    # ICI LE RÉGLAGE MAGIQUE :
+    media_folder: "" 
     public_folder: ""
     fields:
       - { label: "Nom du produit", name: "title", widget: "string" }
@@ -22,7 +23,7 @@ collections:
     label: "Fiches Lyon"
     folder: "pdf/lyon"
     create: true
-    path: "{{title}}"
+    # PAREIL ICI :
     media_folder: ""
     public_folder: ""
     fields:
