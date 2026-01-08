@@ -2,31 +2,45 @@ const repoOwner = "arthurfontainecom-wq";
 const repoName = "Fiche-de-securite-Supbiotech";
 const folderPath = "pdf"; 
 
-// 1. Fonction qui va chercher les PDF sur GitHub et les affiche
 async function chargerPDFsAutomatique() {
-    const url = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${folderPath}`;
+    // On passe par jsDelivr pour lister les fichiers sans blocage API
+    const url = `https://cdn.jsdelivr.net/gh/${repoOwner}/${repoName}@main/${folderPath}/`;
     
     try {
         const response = await fetch(url);
-        const files = await response.json();
-        const list = document.getElementById('pdfVillejuif'); // Ton ID actuel
+        if (!response.ok) throw new Error("Erreur réseau");
         
-        if (list) {
-            list.innerHTML = ""; // On vide la liste écrite à la main pour mettre la liste auto
+        const html = await response.text();
+        
+        // On crée un faux document pour lire les liens dans la page
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const links = doc.querySelectorAll('a');
+        
+        const listVillejuif = document.getElementById('pdfVillejuif');
+        if (listVillejuif) {
+            listVillejuif.innerHTML = ""; // On vide la liste actuelle
 
-            files.forEach(file => {
-                // On vérifie que c'est bien un PDF
-                if (file.name.toLowerCase().endsWith('.pdf')) {
+            links.forEach(link => {
+                const href = link.getAttribute('href');
+                // On vérifie si c'est un PDF (on ignore les dossiers et fichiers système)
+                if (href && href.toLowerCase().endsWith('.pdf')) {
+                    // On récupère le nom du fichier proprement
+                    const fileName = decodeURIComponent(href.split('/').pop());
+                    
                     const li = document.createElement('li');
-                    // On nettoie le nom (on enlève .pdf et les tirets du bas)
-                    const nomAffiche = file.name.replace('.pdf', '').replace(/_/g, ' ');
-                    li.innerHTML = `<a href="${file.download_url}" target="_blank">${nomAffiche}</a>`;
-                    list.appendChild(li);
+                    const nomAffiche = fileName.replace('.pdf', '').replace(/_/g, ' ');
+                    
+                    // Lien direct vers le fichier brut sur GitHub
+                    const downloadUrl = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/${folderPath}/${fileName}`;
+                    
+                    li.innerHTML = `<a href="${downloadUrl}" target="_blank">${nomAffiche}</a>`;
+                    listVillejuif.appendChild(li);
                 }
             });
         }
     } catch (error) {
-        console.error("Erreur GitHub API :", error);
+        console.error("Erreur de chargement (CDN) :", error);
     }
 }
 
@@ -53,3 +67,4 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 });
+
