@@ -2,39 +2,28 @@ const repoOwner = "arthurfontainecom-wq";
 const repoName = "Fiche-de-securite-Supbiotech";
 
 async function chargerDossier(nomVille, idListe) {
-    const listElement = document.getElementById(idListe);
-    // Le ?t= force GitHub à ne pas utiliser une ancienne version en cache
-    const url = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/pdf/${nomVille}?t=${new Date().getTime()}`;
+    const url = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/pdf/${nomVille}`;
     
     try {
         const response = await fetch(url);
-        
-        if (!response.ok) {
-            if (response.status === 403) {
-                listElement.innerHTML = "<li>Limite GitHub atteinte (attendre 5 min)</li>";
-                return;
-            }
-            listElement.innerHTML = "<li>Dossier non trouvé</li>";
-            return;
-        }
+        if (!response.ok) throw new Error("Erreur");
         
         const files = await response.json();
-        listElement.innerHTML = ""; 
-
-        const pdfs = files.filter(f => f.name.toLowerCase().endsWith('.pdf'));
-
-        if (pdfs.length === 0) {
-            listElement.innerHTML = "<li>Aucun document trouvé</li>";
-        } else {
-            pdfs.forEach(file => {
-                const li = document.createElement('li');
-                const nomAffiche = file.name.replace('.pdf', '').replace(/_/g, ' ');
-                li.innerHTML = `<a href="${file.download_url}" target="_blank">${nomAffiche}</a>`;
-                listElement.appendChild(li);
+        const listElement = document.getElementById(idListe);
+        
+        if (listElement) {
+            listElement.innerHTML = ""; 
+            files.forEach(file => {
+                if (file.name.toLowerCase().endsWith('.pdf')) {
+                    const li = document.createElement('li');
+                    const nomAffiche = file.name.replace('.pdf', '').replace(/_/g, ' ');
+                    li.innerHTML = `<a href="${file.download_url}" target="_blank">${nomAffiche}</a>`;
+                    listElement.appendChild(li);
+                }
             });
         }
     } catch (error) {
-        listElement.innerHTML = "<li>Erreur de chargement</li>";
+        document.getElementById(idListe).innerHTML = "<li>Aucun document trouvé</li>";
     }
 }
 
