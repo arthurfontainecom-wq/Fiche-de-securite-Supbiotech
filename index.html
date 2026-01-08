@@ -10,52 +10,35 @@
 </head>
 <body>
 
-    <!-- HEADER -->
     <header class="header">
         <div class="container">
             <h1 class="logo">Fiche de sécurité Supbiotech</h1>
         </div>
     </header>
 
-    <!-- HERO -->
     <section class="hero">
         <div class="container">
             <h2>Banque de fiche de sécurité numérique</h2>
             <p>⬇ Recherche ta fiche de sécurité ⬇</p>
-</div>           
-<section class="pdf-container">
-
-    <!-- COLONNE GAUCHE : LYON (vide ou plus tard) -->
-    <section class="pdf-section">
-        <h3>Document PDF Lyon</h3>
-
-        <form class="search-form">
-            <input type="search" placeholder="Rechercher un PDF..." class="search-input">
-        <ul id="pdfLyon" class="pdf-list">
-        </ul> 
-        </form>
-
-        <p style="text-align:center; color:#6b7280;">
-            Aucun document pour le moment
-        </p>
+        </div>
     </section>
 
-    <!-- COLONNE DROITE : VILLEJUIF (TOUS LES PDF ICI) -->
-    <section class="pdf-section">
-        <h3>Document PDF Villejuif</h3>
+    <section class="pdf-container">
+        <section class="pdf-section">
+            <h3>Document PDF Lyon</h3>
+            <div class="search-form">
+                <input type="search" id="searchLyon" placeholder="Rechercher un PDF à Lyon..." class="search-input">
+            </div>
+            <ul id="pdfLyon" class="pdf-list"></ul> 
+        </section>
 
-        <form class="search-form">
-            <input type="search" placeholder="Rechercher un PDF..." class="search-input" id="searchVillejuif">
-        <ul id="pdfVillejuif" class="pdf-list">
-        </ul> 
-</section>
-
-    <script src="script.js"></script>
+        <section class="pdf-section">
+            <h3>Document PDF Villejuif</h3>
+            <div class="search-form">
+                <input type="search" id="searchVillejuif" placeholder="Rechercher un PDF à Villejuif..." class="search-input">
+            </div>
+            <ul id="pdfVillejuif" class="pdf-list"></ul>
+        </section>
+    </section> <script src="script.js"></script>
 </body>
 </html>
-
-
-
-
-
-
