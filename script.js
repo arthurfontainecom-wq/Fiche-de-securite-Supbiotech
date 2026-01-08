@@ -3,7 +3,7 @@ const repoName = "Fiche-de-securite-Supbiotech";
 
 async function chargerFiches() {
     const listElement = document.getElementById('pdfList');
-    // On ajoute un timestamp pour voir les nouveaux PDF instantanément
+    // On force la mise à jour de la liste avec un timestamp (?t=...)
     const url = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/fiches?ref=main&t=${new Date().getTime()}`;
     
     try {
@@ -17,28 +17,30 @@ async function chargerFiches() {
                 if (file.name.toLowerCase().endsWith('.pdf')) {
                     const li = document.createElement('li');
                     
-                    // Nettoyage du nom (Acide_Clhoridrique.pdf -> Acide Clhoridrique)
+                    // On rend le nom joli
                     const nomAffiche = file.name.replace('.pdf', '').replace(/_/g, ' ').replace(/-/g, ' ');
                     
-                    // ON UTILISE CETTE URL : C'est l'accès direct au contenu brut du fichier
-                    // Le navigateur l'ouvrira directement s'il possède un lecteur PDF (99% des cas)
-                    const viewUrl = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/fiches/${encodeURIComponent(file.name)}`;
+                    // 1. On récupère l'URL brute du fichier sur GitHub
+                    const rawUrl = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/fiches/${encodeURIComponent(file.name)}`;
                     
-                    // target="_blank" ouvre dans un nouvel onglet
-                    li.innerHTML = `<a href="${viewUrl}" target="_blank" rel="noopener noreferrer">${nomAffiche}</a>`;
+                    // 2. On passe par le lecteur de Google (Google Docs Viewer)
+                    // Cela force l'affichage dans un lecteur PDF propre
+                    const googleViewUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(rawUrl)}&embedded=true`;
+                    
+                    li.innerHTML = `<a href="${googleViewUrl}" target="_blank" rel="noopener noreferrer">${nomAffiche}</a>`;
                     listElement.appendChild(li);
                 }
             });
         }
     } catch (e) {
-        console.log("Erreur ou dossier vide.");
+        console.log("Erreur de chargement ou dossier vide.");
     }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     chargerFiches();
     
-    // Barre de recherche
+    // Système de recherche
     const searchBar = document.getElementById('searchBar');
     if (searchBar) {
         searchBar.addEventListener('input', function() {
@@ -51,4 +53,3 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
