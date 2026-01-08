@@ -8,7 +8,7 @@ public_folder: "/pdf"
 collections:
   - name: "fds"
     label: "Fiches de Sécurité"
-    folder: "data/fds"
+    folder: "pdf"
     create: true
     slug: "{{slug}}"
     fields:
