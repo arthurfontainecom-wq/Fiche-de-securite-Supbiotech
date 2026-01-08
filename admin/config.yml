@@ -6,12 +6,21 @@ media_folder: "pdf"
 public_folder: "/pdf"
 
 collections:
-  - name: "fds"
-    label: "Fiches de Sécurité"
-    folder: "pdf"
+  - name: "fiches_villejuif"
+    label: "Fiches Villejuif"
+    folder: "pdf/villejuif"
     create: true
-    slug: "{{slug}}"
+    extension: pdf
+    format: commit
     fields:
-      - { label: "Nom du produit", name: "title", widget: "string" }
-      - { label: "Ville", name: "ville", widget: "select", options: ["Lyon", "Villejuif"] }
-      - { label: "PDF", name: "pdf", widget: "file" }
+    - { label: "Fiche PDF", name: "file", widget: "file" }
+    
+      
+  - name: "fiches_lyon"
+    label: "Fiches Lyon"
+    folder: "pdf/lyon"
+    create: true
+    extension: pdf
+    format: commit
+    fields:
+     - { label: "Fiche PDF", name: "file", widget: "file" }
