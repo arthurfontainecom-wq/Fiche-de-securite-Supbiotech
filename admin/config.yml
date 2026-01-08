@@ -1,0 +1,28 @@
+backend:
+  name: git-gateway
+  repo: arthurfontainecom-wq/Fiche-de-securite-Supbiotech
+  branch: main
+
+media_folder: "pdf"
+public_folder: "/pdf"
+
+collections:
+  - name: "fiches_villejuif"
+    label: "Fiches Villejuif"
+    folder: "pdf/villejuif"
+    create: true
+    media_folder: ""
+    public_folder: ""
+    fields:
+      - { label: "Nom du produit", name: "title", widget: "string" }
+      - { label: "Fichier PDF", name: "file", widget: "file" }
+
+  - name: "fiches_lyon"
+    label: "Fiches Lyon"
+    folder: "pdf/lyon"
+    create: true
+    media_folder: ""
+    public_folder: ""
+    fields:
+      - { label: "Nom du produit", name: "title", widget: "string" }
+      - { label: "Fichier PDF", name: "file", widget: "file" }
