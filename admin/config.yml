@@ -1,0 +1,17 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "pdf"
+public_folder: "/pdf"
+
+collections:
+  - name: "fds"
+    label: "Fiches de Sécurité"
+    folder: "data/fds"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Nom du produit", name: "title", widget: "string" }
+      - { label: "Ville", name: "ville", widget: "select", options: ["Lyon", "Villejuif"] }
+      - { label: "PDF", name: "pdf", widget: "file" }
