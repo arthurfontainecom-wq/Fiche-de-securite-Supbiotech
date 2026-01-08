@@ -1,30 +1,25 @@
 backend:
   name: github
-  repo: arthurfontainecom-wq/Fiche-de-securite-Supbiotech # Ton dépôt
+  repo: arthurfontainecom-wq/Fiche-de-securite-Supbiotech
   branch: main
 
-media_folder: "pdf" # Dossier général pour les médias
+media_folder: "pdf"
 public_folder: "/pdf"
 
 collections:
   - name: "fiches_villejuif"
     label: "Fiches Villejuif"
-    folder: "pdf/villejuif" # Cible le nouveau sous-dossier
+    folder: "pdf/villejuif"
     create: true
-    extension: "pdf"
-    format: "commit"
-    slug: "{{title}}"
+    # On retire la ligne "format" qui causait l'erreur
     fields:
       - { label: "Nom du produit", name: "title", widget: "string" }
       - { label: "Fichier PDF", name: "file", widget: "file" }
 
   - name: "fiches_lyon"
     label: "Fiches Lyon"
-    folder: "pdf/lyon" # Cible le nouveau sous-dossier
+    folder: "pdf/lyon"
     create: true
-    extension: "pdf"
-    format: "commit"
-    slug: "{{title}}"
     fields:
       - { label: "Nom du produit", name: "title", widget: "string" }
       - { label: "Fichier PDF", name: "file", widget: "file" }
