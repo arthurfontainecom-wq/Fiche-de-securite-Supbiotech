@@ -3,7 +3,7 @@ backend:
   repo: arthurfontainecom-wq/Fiche-de-securite-Supbiotech
   branch: main
 
-# Ce dossier sert de secours, mais ne sera pas utilisé par les collections en dessous
+# Configuration globale obligatoire
 media_folder: "pdf"
 public_folder: "/pdf"
 
@@ -12,8 +12,8 @@ collections:
     label: "Fiches Villejuif"
     folder: "pdf/villejuif"
     create: true
-    # ICI LE RÉGLAGE MAGIQUE :
-    media_folder: "" 
+    # Force l'upload dans le sous-dossier spécifique
+    media_folder: ""
     public_folder: ""
     fields:
       - { label: "Nom du produit", name: "title", widget: "string" }
@@ -23,7 +23,7 @@ collections:
     label: "Fiches Lyon"
     folder: "pdf/lyon"
     create: true
-    # PAREIL ICI :
+    # Force l'upload dans le sous-dossier spécifique
     media_folder: ""
     public_folder: ""
     fields:
