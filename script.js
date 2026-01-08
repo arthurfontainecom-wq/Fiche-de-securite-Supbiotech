@@ -3,19 +3,18 @@ const repoName = "Fiche-de-securite-Supbiotech";
 
 async function chargerDossier(nomVille, idListe) {
     const listElement = document.getElementById(idListe);
-    // On utilise un paramètre de temps (?t=...) pour forcer GitHub à nous donner les nouveaux fichiers
+    // Le ?t= force GitHub à ne pas utiliser une ancienne version en cache
     const url = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/pdf/${nomVille}?t=${new Date().getTime()}`;
     
     try {
         const response = await fetch(url);
         
         if (!response.ok) {
-            // SI CA LIMITE LE NOMBRE DE REQUETES
             if (response.status === 403) {
-                listElement.innerHTML = "<li>Erreur : Limite GitHub atteinte (attends 5 min)</li>";
+                listElement.innerHTML = "<li>Limite GitHub atteinte (attendre 5 min)</li>";
                 return;
             }
-            listElement.innerHTML = `<li>Dossier '/pdf/${nomVille}' introuvable sur GitHub</li>`;
+            listElement.innerHTML = "<li>Dossier non trouvé</li>";
             return;
         }
         
@@ -25,7 +24,7 @@ async function chargerDossier(nomVille, idListe) {
         const pdfs = files.filter(f => f.name.toLowerCase().endsWith('.pdf'));
 
         if (pdfs.length === 0) {
-            listElement.innerHTML = "<li>Le dossier est vide sur GitHub</li>";
+            listElement.innerHTML = "<li>Aucun document trouvé</li>";
         } else {
             pdfs.forEach(file => {
                 const li = document.createElement('li');
@@ -35,11 +34,26 @@ async function chargerDossier(nomVille, idListe) {
             });
         }
     } catch (error) {
-        listElement.innerHTML = "<li>Erreur de script : " + error.message + "</li>";
+        listElement.innerHTML = "<li>Erreur de chargement</li>";
+    }
+}
+
+function configurerRecherche(idInput, idListe) {
+    const input = document.getElementById(idInput);
+    if (input) {
+        input.addEventListener('input', function() {
+            const filter = this.value.toLowerCase().trim();
+            const items = document.getElementById(idListe).getElementsByTagName('li');
+            for (let item of items) {
+                item.style.display = item.textContent.toLowerCase().includes(filter) ? "" : "none";
+            }
+        });
     }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     chargerDossier('villejuif', 'pdfVillejuif');
     chargerDossier('lyon', 'pdfLyon');
+    configurerRecherche('searchVillejuif', 'pdfVillejuif');
+    configurerRecherche('searchLyon', 'pdfLyon');
 });
