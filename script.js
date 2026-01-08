@@ -1,49 +1,43 @@
 const repoOwner = "arthurfontainecom-wq";
 const repoName = "Fiche-de-securite-Supbiotech";
-const folderPath = "pdf"; 
 
-async function chargerPDFsAutomatique() {
-    // On passe par jsDelivr pour lister les fichiers sans blocage API
-    const url = `https://cdn.jsdelivr.net/gh/${repoOwner}/${repoName}@main/${folderPath}/`;
-    
+async function chargerDossier(path, elementId) {
+    const url = `https://cdn.jsdelivr.net/gh/${repoOwner}/${repoName}@main/${path}/`;
     try {
         const response = await fetch(url);
-        if (!response.ok) throw new Error("Erreur réseau");
-        
         const html = await response.text();
-        
-        // On crée un faux document pour lire les liens dans la page
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
         const links = doc.querySelectorAll('a');
-        
-        const listVillejuif = document.getElementById('pdfVillejuif');
-        if (listVillejuif) {
-            listVillejuif.innerHTML = ""; // On vide la liste actuelle
+        const listElement = document.getElementById(elementId);
 
+        if (listElement) {
+            listElement.innerHTML = ""; // Vide la liste
             links.forEach(link => {
                 const href = link.getAttribute('href');
-                // On vérifie si c'est un PDF (on ignore les dossiers et fichiers système)
                 if (href && href.toLowerCase().endsWith('.pdf')) {
-                    // On récupère le nom du fichier proprement
                     const fileName = decodeURIComponent(href.split('/').pop());
-                    
                     const li = document.createElement('li');
                     const nomAffiche = fileName.replace('.pdf', '').replace(/_/g, ' ');
-                    
-                    // Lien direct vers le fichier brut sur GitHub
-                    const downloadUrl = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/${folderPath}/${fileName}`;
+                    const downloadUrl = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/${path}/${fileName}`;
                     
                     li.innerHTML = `<a href="${downloadUrl}" target="_blank">${nomAffiche}</a>`;
-                    listVillejuif.appendChild(li);
+                    listElement.appendChild(li);
                 }
             });
         }
-    } catch (error) {
-        console.error("Erreur de chargement (CDN) :", error);
-    }
+    } catch (e) { console.error("Erreur sur " + path, e); }
 }
 
+document.addEventListener('DOMContentLoaded', async () => {
+    // Charge les deux dossiers en parallèle
+    await Promise.all([
+        chargerDossier("pdf/villejuif", "pdfVillejuif"),
+        chargerDossier("pdf/lyon", "pdfLyon")
+    ]);
+
+    // Ton code de recherche reste le même ici...
+});
 // 2. Initialisation au chargement de la page
 document.addEventListener('DOMContentLoaded', async () => {
     // On attend que les fichiers soient chargés avant d'activer la recherche
@@ -67,4 +61,5 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 });
+
 
