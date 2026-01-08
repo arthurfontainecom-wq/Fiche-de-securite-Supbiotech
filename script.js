@@ -60,3 +60,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     configurerRecherche('searchLyon', 'pdfLyon');
 });
 
+
