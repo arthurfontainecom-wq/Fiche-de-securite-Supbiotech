@@ -1,72 +1,63 @@
 const repoOwner = "arthurfontainecom-wq";
 const repoName = "Fiche-de-securite-Supbiotech";
 
-// 1. Fonction pour charger les fichiers d'un dossier spécifique
 async function chargerDossier(nomVille, idListe) {
-    const url = `https://cdn.jsdelivr.net/gh/${repoOwner}/${repoName}@main/pdf/${nomVille}/`;
+    // Utilisation de l'API GitHub (plus fiable pour les sous-dossiers)
+    const url = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/pdf/${nomVille}`;
     
     try {
         const response = await fetch(url);
-        if (!response.ok) return;
+        if (!response.ok) throw new Error("Dossier non trouvé");
         
-        const html = await response.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
-        const links = doc.querySelectorAll('a');
-        
+        const files = await response.json();
         const listElement = document.getElementById(idListe);
+        
         if (listElement) {
             listElement.innerHTML = ""; 
 
-            links.forEach(link => {
-                const href = link.getAttribute('href');
-                if (href && href.toLowerCase().endsWith('.pdf')) {
-                    const fileName = decodeURIComponent(href.split('/').pop());
+            files.forEach(file => {
+                if (file.name.toLowerCase().endsWith('.pdf')) {
                     const li = document.createElement('li');
-                    const nomAffiche = fileName.replace('.pdf', '').replace(/_/g, ' ');
+                    const nomAffiche = file.name.replace('.pdf', '').replace(/_/g, ' ');
                     
-                    const downloadUrl = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/pdf/${nomVille}/${fileName}`;
-                    
-                    li.innerHTML = `<a href="${downloadUrl}" target="_blank">${nomAffiche}</a>`;
+                    // Lien de téléchargement direct
+                    li.innerHTML = `<a href="${file.download_url}" target="_blank">${nomAffiche}</a>`;
                     listElement.appendChild(li);
                 }
             });
         }
     } catch (error) {
         console.error("Erreur pour " + nomVille + " :", error);
+        // Affiche un message si le dossier est vide
+        const listElement = document.getElementById(idListe);
+        if(listElement) listElement.innerHTML = "<li>Aucun document trouvé</li>";
     }
 }
 
-// 2. Fonction de filtrage réutilisable
 function configurerRecherche(idInput, idListe) {
     const input = document.getElementById(idInput);
-    const list = document.getElementById(idListe);
-    
-    if (input && list) {
+    if (input) {
         input.addEventListener('input', function() {
             const filter = this.value.toLowerCase().trim();
+            const list = document.getElementById(idListe);
             const items = list.getElementsByTagName('li');
 
-            for (let i = 0; i < items.length; i++) {
-                const text = items[i].textContent.toLowerCase().trim();
-                items[i].style.display = text.includes(filter) ? "" : "none";
+            for (let item of items) {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(filter) ? "" : "none";
             }
         });
     }
 }
 
-// 3. Initialisation unique au chargement
 document.addEventListener('DOMContentLoaded', async () => {
-    // On charge les deux dossiers en parallèle
     await Promise.all([
         chargerDossier('villejuif', 'pdfVillejuif'),
         chargerDossier('lyon', 'pdfLyon')
     ]);
 
-    // On active la recherche pour chaque ville
     configurerRecherche('searchVillejuif', 'pdfVillejuif');
-    configurerRecherche('searchLyon', 'pdfLyon'); // Assure-toi d'avoir cet ID dans ton HTML pour Lyon
+    configurerRecherche('searchLyon', 'pdfLyon');
 });
-
 
 
