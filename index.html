@@ -5,23 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fiche de sécurité Supbiotech</title>
     <link rel="stylesheet" href="style1.css">
+    <meta name="robots" content="noindex, nofollow">
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
+
     <header class="header">
-        <div class="container"><h1>Fiche de sécurité Supbiotech</h1></div>
+        <div class="container">
+            <h1 class="logo">Fiche de sécurité Supbiotech</h1>
+        </div>
     </header>
+
+    <section class="hero">
+        <div class="container">
+            <h2>Banque de fiche de sécurité numérique</h2>
+            <p>⬇ Recherche ta fiche de sécurité ⬇</p>
+        </div>
+    </section>
 
     <section class="pdf-container">
         <section class="pdf-section">
             <h3>Document PDF Lyon</h3>
-            <input type="search" id="searchLyon" placeholder="Rechercher à Lyon..." class="search-input">
+            <div class="search-form">
+                <input type="search" id="searchLyon" placeholder="Rechercher un PDF à Lyon..." class="search-input">
+            </div>
             <ul id="pdfLyon" class="pdf-list"></ul> 
         </section>
 
         <section class="pdf-section">
             <h3>Document PDF Villejuif</h3>
-            <input type="search" id="searchVillejuif" placeholder="Rechercher à Villejuif..." class="search-input">
+            <div class="search-form">
+                <input type="search" id="searchVillejuif" placeholder="Rechercher un PDF à Villejuif..." class="search-input">
+            </div>
             <ul id="pdfVillejuif" class="pdf-list"></ul>
         </section>
     </section>
