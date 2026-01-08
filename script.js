@@ -2,12 +2,11 @@ const repoOwner = "arthurfontainecom-wq";
 const repoName = "Fiche-de-securite-Supbiotech";
 
 async function chargerDossier(nomVille, idListe) {
-    // Utilisation de l'API GitHub (plus fiable pour les sous-dossiers)
     const url = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/pdf/${nomVille}`;
     
     try {
         const response = await fetch(url);
-        if (!response.ok) throw new Error("Dossier non trouvé");
+        if (!response.ok) throw new Error("Dossier introuvable");
         
         const files = await response.json();
         const listElement = document.getElementById(idListe);
@@ -20,7 +19,6 @@ async function chargerDossier(nomVille, idListe) {
                     const li = document.createElement('li');
                     const nomAffiche = file.name.replace('.pdf', '').replace(/_/g, ' ');
                     
-                    // Lien de téléchargement direct
                     li.innerHTML = `<a href="${file.download_url}" target="_blank">${nomAffiche}</a>`;
                     listElement.appendChild(li);
                 }
@@ -28,9 +26,10 @@ async function chargerDossier(nomVille, idListe) {
         }
     } catch (error) {
         console.error("Erreur pour " + nomVille + " :", error);
-        // Affiche un message si le dossier est vide
         const listElement = document.getElementById(idListe);
-        if(listElement) listElement.innerHTML = "<li>Aucun document trouvé</li>";
+        if (listElement) {
+            listElement.innerHTML = "<li>Aucun document trouvé</li>";
+        }
     }
 }
 
@@ -39,8 +38,7 @@ function configurerRecherche(idInput, idListe) {
     if (input) {
         input.addEventListener('input', function() {
             const filter = this.value.toLowerCase().trim();
-            const list = document.getElementById(idListe);
-            const items = list.getElementsByTagName('li');
+            const items = document.getElementById(idListe).getElementsByTagName('li');
 
             for (let item of items) {
                 const text = item.textContent.toLowerCase();
@@ -51,13 +49,13 @@ function configurerRecherche(idInput, idListe) {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+    // Chargement des dossiers
     await Promise.all([
         chargerDossier('villejuif', 'pdfVillejuif'),
         chargerDossier('lyon', 'pdfLyon')
     ]);
 
+    // Activation de la recherche
     configurerRecherche('searchVillejuif', 'pdfVillejuif');
     configurerRecherche('searchLyon', 'pdfLyon');
 });
-
-
