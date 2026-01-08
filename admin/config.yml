@@ -1,26 +1,30 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: arthurfontainecom-wq/Fiche-de-securite-Supbiotech # Ton dépôt
   branch: main
 
-media_folder: "pdf"
+media_folder: "pdf" # Dossier général pour les médias
 public_folder: "/pdf"
 
 collections:
   - name: "fiches_villejuif"
     label: "Fiches Villejuif"
-    folder: "pdf/villejuif"
+    folder: "pdf/villejuif" # Cible le nouveau sous-dossier
     create: true
-    extension: pdf
-    format: commit
+    extension: "pdf"
+    format: "commit"
+    slug: "{{title}}"
     fields:
-    - { label: "Fiche PDF", name: "file", widget: "file" }
-    
-      
+      - { label: "Nom du produit", name: "title", widget: "string" }
+      - { label: "Fichier PDF", name: "file", widget: "file" }
+
   - name: "fiches_lyon"
     label: "Fiches Lyon"
-    folder: "pdf/lyon"
+    folder: "pdf/lyon" # Cible le nouveau sous-dossier
     create: true
-    extension: pdf
-    format: commit
+    extension: "pdf"
+    format: "commit"
+    slug: "{{title}}"
     fields:
-     - { label: "Fiche PDF", name: "file", widget: "file" }
+      - { label: "Nom du produit", name: "title", widget: "string" }
+      - { label: "Fichier PDF", name: "file", widget: "file" }
