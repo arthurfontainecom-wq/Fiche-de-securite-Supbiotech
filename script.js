@@ -3,39 +3,36 @@ const repoName = "Fiche-de-securite-Supbiotech";
 
 async function chargerDossier(nomVille, idListe) {
     const listElement = document.getElementById(idListe);
-    // On force la lecture sur la branche main
+    // On tape directement dans la branche main pour avoir les derniers PDF ajoutés
     const url = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/pdf/${nomVille}?ref=main`;
     
     try {
         const response = await fetch(url);
-        if (!response.ok) throw new Error("Dossier introuvable");
-        
         const files = await response.json();
+        
+        // On vide la liste avant d'ajouter les PDF
         listElement.innerHTML = ""; 
 
-        const pdfs = files.filter(f => f.name.toLowerCase().endsWith('.pdf'));
-
-        if (pdfs.length === 0) {
-            listElement.innerHTML = "<li>Aucun document trouvé</li>";
-        } else {
-            pdfs.forEach(file => {
+        files.forEach(file => {
+            // Si c'est un PDF, on l'ajoute direct à la liste
+            if (file.name.toLowerCase().endsWith('.pdf')) {
                 const li = document.createElement('li');
-                const nomAffiche = file.name.replace('.pdf', '').replace(/_/g, ' ');
-                li.innerHTML = `<a href="${file.download_url}" target="_blank">${nomAffiche}</a>`;
+                const nomPropre = file.name.replace('.pdf', '').replace(/_/g, ' ').replace(/-/g, ' ');
+                
+                li.innerHTML = `<a href="${file.download_url}" target="_blank">${nomPropre}</a>`;
                 listElement.appendChild(li);
-            });
-        }
+            }
+        });
     } catch (error) {
-        listElement.innerHTML = "<li>Dossier /pdf/" + nomVille + " vide ou inexistant</li>";
+        console.log("Erreur technique pour " + nomVille);
     }
 }
 
-// Fonction de recherche simple
-function activerRecherche(idInput, idListe) {
+function configurerRecherche(idInput, idListe) {
     const input = document.getElementById(idInput);
     if (input) {
         input.addEventListener('input', function() {
-            const filter = this.value.toLowerCase();
+            const filter = this.value.toLowerCase().trim();
             const items = document.getElementById(idListe).getElementsByTagName('li');
             for (let item of items) {
                 item.style.display = item.textContent.toLowerCase().includes(filter) ? "" : "none";
@@ -45,8 +42,11 @@ function activerRecherche(idInput, idListe) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    // On lance le chargement pour Villejuif et Lyon
     chargerDossier('villejuif', 'pdfVillejuif');
     chargerDossier('lyon', 'pdfLyon');
-    activerRecherche('searchVillejuif', 'pdfVillejuif');
-    activerRecherche('searchLyon', 'pdfLyon');
+    
+    // On active la barre de recherche
+    configurerRecherche('searchVillejuif', 'pdfVillejuif');
+    configurerRecherche('searchLyon', 'pdfLyon');
 });
