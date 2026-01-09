@@ -15,7 +15,15 @@ async function chargerFiches() {
                 const li = document.createElement('li');
                 const nomAffiche = file.name.replace('.pdf', '').replace(/_/g, ' ').replace(/-/g, ' ');
                 const pdfUrl = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/fiches/${file.name}`;
-                li.innerHTML = `<a href="${pdfUrl}" target="_blank">${nomAffiche}</a>`;
+                li.innerHTML = `<a href="#">${nomAffiche}</a>`;
+                li.querySelector('a').addEventListener('click', (e) => {
+    e.preventDefault();
+
+    document.getElementById('pdfViewer').style.display = "block";
+    document.getElementById('pdfFrame').src = pdfUrl;
+    document.getElementById('pdfTitle').textContent = nomAffiche;
+});
+
                 listElement.appendChild(li);
             }
         });
@@ -36,4 +44,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
 
