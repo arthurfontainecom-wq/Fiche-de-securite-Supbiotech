@@ -14,7 +14,8 @@ async function chargerFiches() {
             if (file.name.toLowerCase().endsWith('.pdf')) {
                 const li = document.createElement('li');
                 const nomAffiche = file.name.replace('.pdf', '').replace(/_/g, ' ').replace(/-/g, ' ');
-                li.innerHTML = `<a href="${file.download_url}" target="_blank">${nomAffiche}</a>`;
+                const pdfUrl = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/fiches/${file.name}`;
+                li.innerHTML = `<a href="${pdfUrl}" target="_blank">${nomAffiche}</a>`;
                 listElement.appendChild(li);
             }
         });
@@ -35,3 +36,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
