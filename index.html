@@ -6,26 +6,45 @@
     <link rel="stylesheet" href="style1.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Fiches de Sécurité Supbiotech</h1>
-
-        <input type="text" id="searchBar" placeholder="Rechercher un produit (ou synonyme : ex: alcool, danger...)">
-        
-        <ul id="pdfList">
-            <li>Chargement des fiches...</li>
-        </ul>
-
-        <hr>
-
-        <div class="upload-section">
-            <h3>Ajouter un nouveau PDF</h3>
-            <input type="text" id="fileTitle" placeholder="Nom du produit">
-            <input type="file" id="fileInput" accept=".pdf">
-            <input type="password" id="ghToken" placeholder="Votre Token GitHub">
-            <button onclick="uploadPDF()">Uploader sur le site</button>
-            <p id="uploadStatus"></p>
+    <header class="header">
+        <div class="container">
+            <div class="logo">SUPBIOTECH</div>
+            <nav class="nav">
+                <a href="#">Fiches Sécurité</a>
+            </nav>
         </div>
+    </header>
+
+    <main class="hero">
+        <h2>Fiches de Sécurité</h2>
+        <p>Accès rapide aux documents de sécurité du laboratoire</p>
+    </main>
+
+    <div class="pdf-container">
+        <section class="pdf-section">
+            <h3>Consulter les fiches</h3>
+            <input type="text" id="searchBar" class="search-input" placeholder="Rechercher un produit (ex: acide, alcool...)">
+            
+            <ul id="pdfList" class="pdf-list">
+                <li>Chargement des fiches...</li>
+            </ul>
+        </section>
+
+        <section class="pdf-section">
+            <h3>Ajouter un nouveau PDF</h3>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <input type="text" id="fileTitle" class="search-input" style="margin-bottom:0" placeholder="Nom du produit">
+                <input type="file" id="fileInput" accept=".pdf" style="margin: 10px 0;">
+                <input type="password" id="ghToken" class="search-input" style="margin-bottom:0" placeholder="Votre Token GitHub">
+                
+                <button onclick="uploadPDF()" style="background: var(--spotify-green); border: none; padding: 12px; border-radius: 50px; font-weight: bold; cursor: pointer; margin-top: 10px;">
+                    Uploader sur le site
+                </button>
+                <p id="uploadStatus" style="font-size: 0.8rem; text-align: center; margin-top: 10px;"></p>
+            </div>
+        </section>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
