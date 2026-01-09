@@ -9,24 +9,31 @@ async function chargerFiches() {
         const response = await fetch(url);
         const files = await response.json();
         listElement.innerHTML = ""; 
-
+        
         files.forEach(file => {
-            if (file.name.toLowerCase().endsWith('.pdf')) {
-                const li = document.createElement('li');
-                const nomAffiche = file.name.replace('.pdf', '').replace(/_/g, ' ').replace(/-/g, ' ');
-                const pdfUrl = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/fiches/${file.name}`;
-                li.innerHTML = `<a href="#">${nomAffiche}</a>`;
-                li.querySelector('a').addEventListener('click', (e) => {
-    e.preventDefault();
+    if (file.name.toLowerCase().endsWith('.pdf')) {
+        const li = document.createElement('li');
 
-    document.getElementById('pdfViewer').style.display = "block";
-    document.getElementById('pdfFrame').src = pdfUrl;
-    document.getElementById('pdfTitle').textContent = nomAffiche;
+        const nomAffiche = file.name
+            .replace('.pdf', '')
+            .replace(/_/g, ' ')
+            .replace(/-/g, ' ');
+
+        const pdfUrl = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/fiches/${file.name}`;
+
+        li.innerHTML = `<a href="#">${nomAffiche}</a>`;
+
+        li.querySelector('a').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('pdfViewer').style.display = "block";
+            document.getElementById('pdfFrame').src = pdfUrl;
+            document.getElementById('pdfTitle').textContent = nomAffiche;
+        });
+
+        listElement.appendChild(li);
+    }
 });
 
-                listElement.appendChild(li);
-            }
-        });
     } catch (e) {
         console.log("En attente de documents dans le dossier 'fiches'...");
     }
@@ -44,5 +51,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
 
 
