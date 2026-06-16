@@ -3,7 +3,7 @@ const repoName = "Fiche-de-securite-Supbiotech";
 
 // 1. TES RECHERCHES ASSOCIÉES (SYNONYMES)
 const synonymes = {
-    "caca": "etron poop merde",
+    "caca": "etron poop merde", 
     "acide_chlorhydrique": "hcl danger corrosif acide fort",
     "ethanol": "alcool inflammable nettoyage",
     "acetone": "solvant vernis inflammable"
@@ -13,10 +13,15 @@ const synonymes = {
 async function chargerFiches() {
     const listElement = document.getElementById('pdfList');
     try {
-        const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/fiches`);
+        
+        const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/fiches?t=${new Date().getTime()}`);
         const files = await response.json();
         
-        if (!Array.isArray(files)) return;
+        if (!Array.isArray(files)) {
+            listElement.innerHTML = "<li>Aucun fichier trouvé ou dossier inexistant.</li>";
+            return;
+        }
+        
         listElement.innerHTML = "";
 
         files.forEach(file => {
@@ -25,7 +30,7 @@ async function chargerFiches() {
                 const idFichier = file.name.replace('.pdf', '').toLowerCase();
                 const nomAffiche = idFichier.replace(/_/g, ' ').replace(/-/g, ' ');
                 
-                // On attache les synonymes pour la recherche
+                
                 const tags = synonymes[idFichier] || "";
                 li.setAttribute('data-keywords', tags);
                 
@@ -33,8 +38,12 @@ async function chargerFiches() {
                 listElement.appendChild(li);
             }
         });
+
+        
+        appliquerFiltrage();
+
     } catch (e) {
-        listElement.innerHTML = "<li>Erreur de chargement.</li>";
+        listElement.innerHTML = "<li>Erreur de chargement des fiches.</li>";
     }
 }
 
@@ -42,11 +51,12 @@ async function chargerFiches() {
 async function uploadPDF() {
     const title = document.getElementById('fileTitle').value.trim();
     const file = document.getElementById('fileInput').files[0];
-    const token = document.getElementById('ghToken').value;
+    const token = document.getElementById('ghToken').value.trim(); 
     const status = document.getElementById('uploadStatus');
 
     if (!title || !file || !token) {
         status.innerText = "⚠️ Remplissez tous les champs (Nom, Fichier, Token).";
+        status.style.color = "orange";
         return;
     }
 
@@ -54,38 +64,60 @@ async function uploadPDF() {
     const reader = new FileReader();
 
     reader.onload = async () => {
-        const content = reader.result.split(',')[1]; // Base64
+        const content = reader.result.split(',')[1]; 
         const url = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/fiches/${fileName}`;
 
-        status.innerText = "⏳ Envoi en cours...";
+        status.innerText = "⏳ Envoi en cours vers GitHub...";
+        status.style.color = "white";
 
-        const response = await fetch(url, {
-            method: "PUT",
-            headers: { "Authorization": `token ${token}`, "Content-Type": "application/json" },
-            body: JSON.stringify({
-                message: `Ajout de la fiche ${title}`,
-                content: content
-            })
-        });
+        try {
+            const response = await fetch(url, {
+                method: "PUT",
+                headers: { 
+                    "Authorization": `token ${token}`, 
+                    "Content-Type": "application/json" 
+                },
+                body: JSON.stringify({
+                    message: `Ajout de la fiche ${title}`,
+                    content: content
+                })
+            });
 
-        if (response.ok) {
-            status.innerText = "✅ Succès ! Le PDF est en ligne. Rafraîchissez dans 1 min.";
-            chargerFiches();
-        } else {
-            status.innerText = "❌ Erreur. Vérifiez votre Token ou le nom du fichier.";
+            if (response.ok) {
+                status.innerText = "✅ Succès ! Le PDF est enregistré. Actualisation de la liste...";
+                status.style.color = "#1db954"; 
+                
+                
+                document.getElementById('fileTitle').value = "";
+                document.getElementById('fileInput').value = "";
+
+               
+                setTimeout(chargerFiches, 2000);
+            } else {
+                const errorData = await response.json();
+                status.innerText = `❌ Erreur GitHub (${response.status}) : ${errorData.message}`;
+                status.style.color = "red";
+            }
+        } catch (error) {
+            status.innerText = "❌ Erreur réseau impossible de joindre GitHub.";
+            status.style.color = "red";
         }
     };
     reader.readAsDataURL(file);
 }
 
-// 4. BARRE DE RECHERCHE
-document.getElementById('searchBar').addEventListener('input', function() {
-    const filter = this.value.toLowerCase();
+// 4. BARRE DE RECHERCHE 
+function appliquerFiltrage() {
+    const searchBar = document.getElementById('searchBar');
+    if (!searchBar) return;
+    
+    const filter = searchBar.value.toLowerCase();
     document.querySelectorAll('#pdfList li').forEach(item => {
         const text = item.textContent.toLowerCase();
         const tags = item.getAttribute('data-keywords') || "";
         item.style.display = (text.includes(filter) || tags.includes(filter)) ? "" : "none";
     });
-});
+}
 
+document.getElementById('searchBar').addEventListener('input', appliquerFiltrage);
 document.addEventListener('DOMContentLoaded', chargerFiches);
