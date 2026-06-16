@@ -1,5 +1,5 @@
-const repoOwner = "arthurfontainecom-wq";
-const repoName = "Fiche-Securite-Final";
+const repoOwner = "sup-biotech";
+const repoName = "Fiche-de-securite-Supbiotech";
 
 // 1. TES RECHERCHES ASSOCIÉES (SYNONYMES)
 const synonymes = {
